@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Одягаємо броню: технічний захист</title>
+    <!-- Підключення Tailwind CSS для адаптивної верстки -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Підключення сучасних шрифтів з підтримкою кирилиці -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Базові налаштування теми та анімацій */
+        :root {
+            --bg-dark: #060b19;
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-rose: #f43f5e;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 40%),
+                linear-gradient(to bottom, #060b19, #0b132b);
+            color: #f8fafc;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Кібер-сітка на фоні */
+        .cyber-grid {
+            background-size: 36px 36px;
+            background-image: 
+                linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+        }
+
+        /* Скляні панелі */
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Анімації для частин броні персонажа */
+        .armor-piece {
+            opacity: 0;
+            transform: scale(0.85) translateY(-10px);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+
+        .armor-piece.equipped {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.65));
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.5)); }
+            50% { filter: drop-shadow(0 0 18px rgba(16, 185, 129, 0.85)); }
+        }
+
+        .shield-active {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes floatHero {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .hero-float {
+            animation: floatHero 4s ease-in-out infinite;
+        }
+
+        /* Ігрові кнопки */
+        .btn-cyber {
+            background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+            transition: all 0.2s ease;
+        }
+        .btn-cyber:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(6, 182, 212, 0.55), inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+        .btn-cyber:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        .btn-cyber:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            filter: grayscale(0.6);
+        }
+
+        .btn-emerald {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+            transition: all 0.2s ease;
+        }
+        .btn-emerald:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(16, 185, 129, 0.55);
+        }
+        .btn-emerald:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+            filter: grayscale(0.6);
+        }
+
+        /* Анімація вірусної хвилі при витоку пароля */
+        @keyframes breachPulse {
+            0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); }
+            70% { box-shadow: 0 0 0 14px rgba(244, 63, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+        }
+        .compromised-node {
+            animation: breachPulse 1.2s infinite;
+            border-color: #f43f5e !important;
+            background-color: rgba(244, 63, 94, 0.15) !important;
+        }
+
+        /* Плавна поява карток */
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stage-enter {
+            animation: fadeInSlide 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="cyber-grid flex flex-col justify-between">
+
+    <!-- Верхня навігаційна панель -->
+    <header class="w-full border-b border-cyan-500/20 bg-slate-950/80 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/25">
+                    <!-- SVG Іконка щита -->
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white leading-tight">
+                        Одягаємо броню: <span class="text-cyan-400">технічний захист</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Інтерактивна академія надійних паролів</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Лічильник балів -->
+                <div class="px-3 py-1.5 rounded-xl bg-slate-900 border border-cyan-500/30 flex items-center gap-2">
+                    <span class="text-xs text-slate-400 hidden sm:inline">Досвід:</span>
+                    <span id="scoreDisplay" class="font-mono-code font-bold text-amber-400 text-sm">0 XP</span>
+                </div>
+
+                <!-- Кнопка відкриття Довідника -->
+                <button id="openCodexBtn" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-1.5 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                    <span>База знань</span>
+                </button>
+
+                <!-- Кнопка звуку -->
+                <button id="toggleSoundBtn" title="Увімкнути/вимкнути звук" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 transition">
+                    <svg id="soundOnIcon" class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                    </svg>
+                    <svg id="soundOffIcon" class="w-5 h-5 text-slate-500 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Головний ігровий контейнер -->
+    <main class="max-w-7xl w-full mx-auto px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- ЛІВА КОЛОНКА: Кібер-герой та статус броні (5 колонок на десктопі) -->
+        <section class="lg:col-span-5 glass-panel rounded-2xl p-5 flex flex-col items-center relative overflow-hidden">
+            <div class="w-full flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                    Статус кібер-броні
+                </span>
+                <span id="armorPercentText" class="font-mono-code text-sm font-bold text-emerald-400">0% Захисту</span>
+            </div>
+
+            <!-- Прогрес-бар броні -->
+            <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden border border-slate-700 mb-4">
+                <div id="armorProgressBar" class="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-emerald-400 transition-all duration-700" style="width: 0%"></div>
+            </div>
+
+            <!-- Інтерактивний SVG-персонаж у голографічній капсулі -->
+            <div class="relative w-full max-w-[290px] aspect-square flex items-center justify-center my-1">
+                <!-- Голографічне коло позаду -->
+                <div class="absolute inset-4 rounded-full border border-dashed border-cyan-500/30 animate-[spin_25s_linear_infinite]"></div>
+                <div class="absolute inset-10 rounded-full border border-emerald-500/20"></div>
+                
+                <!-- SVG Кібер-захисника з окремими шарами броні -->
+                <svg viewBox="0 0 260 280" class="w-full h-full hero-float z-10" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="cyberMetal" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#38bdf8"/>
+                            <stop offset="50%" stop-color="#0284c7"/>
+                            <stop offset="100%" stop-color="#1e3a8a"/>
+                        </linearGradient>
+                        <linearGradient id="emeraldGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#34d399"/>
+                            <stop offset="100%" stop-color="#059669"/>
+                        </linearGradient>
+                        <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="rgba(16, 185, 129, 0.45)"/>
+                            <stop offset="100%" stop-color="rgba(6, 182, 212, 0.25)"/>
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Платформа -->
+                    <ellipse cx="130" cy="258" rx="75" ry="12" fill="rgba(6, 182, 212, 0.2)" stroke="#06b6d4" stroke-width="1.5"/>
+
+                    <!-- ШАР 5: Аура / Енергополе (Активується на 5 етапі) -->
+                    <g id="armor-aura" class="armor-piece">
+                        <circle cx="130" cy="135" r="112" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="10 6"/>
+                        <circle cx="130" cy="135" r="102" fill="rgba(16, 185, 129, 0.06)"/>
+                    </g>
+
+                    <!-- БАЗОВИЙ СИЛУЕТ ПЕРСОНАЖА (без броні - вразливий) -->
+                    <g id="base-body">
+                        <!-- Ноги -->
+                        <rect x="102" y="175" width="20" height="72" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                        <rect x="138" y="175" width="20" height="72" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                        <!-- Тулуб -->
+                        <rect x="94" y="96" width="72" height="84" rx="16" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                        <!-- Руки -->
+                        <rect x="66" y="102" width="20" height="68" rx="9" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                        <rect x="174" y="102" width="20" height="68" rx="9" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+                        <!-- Голова -->
+                        <circle cx="130" cy="64" r="26" fill="#334155" stroke="#64748b" stroke-width="2"/>
+                        <!-- Очі -->
+                        <circle cx="121" cy="62" r="3" fill="#94a3b8"/>
+                        <circle cx="139" cy="62" r="3" fill="#94a3b8"/>
+                    </g>
+
+                    <!-- ШАР 1: ШОЛОМ ДОВЖИНИ ТА СКЛАДНОСТІ -->
+                    <g id="armor-helmet" class="armor-piece">
+                        <path d="M98 64 C98 38, 162 38, 162 64 L158 84 L130 92 L102 84 Z" fill="url(#cyberMetal)" stroke="#7dd3fc" stroke-width="2"/>
+                        <!-- Візор -->
+                        <path d="M106 58 L154 58 L148 70 L112 70 Z" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+                        <line x1="114" y1="64" x2="146" y2="64" stroke="#22d3ee" stroke-width="3" stroke-linecap="round"/>
+                        <!-- Антени шолома -->
+                        <line x1="100" y1="52" x2="94" y2="34" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                        <line x1="160" y1="52" x2="166" y2="34" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- ШАР 2: НАГРУДНИК ПАРОЛЬНИХ ФРАЗ -->
+                    <g id="armor-chest" class="armor-piece">
+                        <path d="M88 96 L172 96 L166 176 L130 186 L94 176 Z" fill="url(#cyberMetal)" stroke="#7dd3fc" stroke-width="2"/>
+                        <!-- Реактор у центрі грудей -->
+                        <polygon points="130,114 146,126 140,146 120,146 114,126" fill="#0f172a" stroke="#34d399" stroke-width="2.5"/>
+                        <circle cx="130" cy="131" r="6" fill="#10b981"/>
+                        <!-- Наплічники -->
+                        <path d="M62 96 Q78 84 94 98 L90 120 L62 115 Z" fill="url(#cyberMetal)" stroke="#7dd3fc" stroke-width="2"/>
+                        <path d="M198 96 Q182 84 166 98 L170 120 L198 115 Z" fill="url(#cyberMetal)" stroke="#7dd3fc" stroke-width="2"/>
+                    </g>
+
+                    <!-- ШАР 3: РУКАВИЦІ УНІКАЛЬНОСТІ -->
+                    <g id="armor-gauntlets" class="armor-piece">
+                        <rect x="62" y="136" width="26" height="38" rx="7" fill="url(#emeraldGlow)" stroke="#a7f3d0" stroke-width="2"/>
+                        <rect x="172" y="136" width="26" height="38" rx="7" fill="url(#emeraldGlow)" stroke="#a7f3d0" stroke-width="2"/>
+                        <!-- Наколінники/Чоботи -->
+                        <rect x="98" y="192" width="26" height="54" rx="7" fill="url(#cyberMetal)" stroke="#7dd3fc" stroke-width="2"/>
+                        <rect x="136" y="192" width="26" height="54" rx="7" fill="url(#cyberMetal)" stroke="#7dd3fc" stroke-width="2"/>
+                    </g>
+
+                    <!-- ШАР 4: ЕНЕРГЕТИЧНИЙ ЩИТ МЕНЕДЖЕРА ТА 2FA -->
+                    <g id="armor-shield" class="armor-piece shield-active">
+                        <path d="M188 108 L234 122 L230 172 C226 196 208 212 188 220 C168 212 150 196 146 172 L142 122 Z" 
+                              fill="url(#shieldGrad)" stroke="#34d399" stroke-width="3"/>
+                        <!-- Замок на щиті -->
+                        <rect x="178" y="158" width="20" height="16" rx="3" fill="#10b981"/>
+                        <path d="M182 158 V151 A6 6 0 0 1 194 151 V158" fill="none" stroke="#a7f3d0" stroke-width="2.5"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Слот-індикатори елементів броні -->
+            <div class="w-full grid grid-cols-5 gap-2 mt-2">
+                <div id="slot-1" class="p-2 rounded-xl bg-slate-900/90 border border-slate-700 text-center transition">
+                    <div class="text-lg">🪖</div>
+                    <div class="text-[10px] font-semibold text-slate-400 leading-tight mt-0.5">Шолом</div>
+                </div>
+                <div id="slot-2" class="p-2 rounded-xl bg-slate-900/90 border border-slate-700 text-center transition">
+                    <div class="text-lg">🦺</div>
+                    <div class="text-[10px] font-semibold text-slate-400 leading-tight mt-0.5">Кіраса</div>
+                </div>
+                <div id="slot-3" class="p-2 rounded-xl bg-slate-900/90 border border-slate-700 text-center transition">
+                    <div class="text-lg">🧤</div>
+                    <div class="text-[10px] font-semibold text-slate-400 leading-tight mt-0.5">Рукавиці</div>
+                </div>
+                <div id="slot-4" class="p-2 rounded-xl bg-slate-900/90 border border-slate-700 text-center transition">
+                    <div class="text-lg">🛡️</div>
+                    <div class="text-[10px] font-semibold text-slate-400 leading-tight mt-0.5">Щит 2FA</div>
+                </div>
+                <div id="slot-5" class="p-2 rounded-xl bg-slate-900/90 border border-slate-700 text-center transition">
+                    <div class="text-lg">⚡</div>
+                    <div class="text-[10px] font-semibold text-slate-400 leading-tight mt-0.5">Аура</div>
+                </div>
+            </div>
+
+            <!-- Коротке зведення місії -->
+            <div id="heroStatusCard" class="w-full mt-4 p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/20 text-xs text-slate-300 leading-relaxed">
+                <strong class="text-cyan-400 block mb-1">Завдання академії:</strong>
+                Твій персонаж зараз беззахисний перед кібератаками. Пройди 5 практичних етапів, щоб викувати надійні паролі, зупинити ефект доміно при витоках даних та зібрати повний комплект технічної броні!
+            </div>
+        </section>
+
+        <!-- ПРАВА КОЛОНКА: Інтерактивний термінал місій (7 колонок на десктопі) -->
+        <section class="lg:col-span-7 glass-panel rounded-2xl p-5 sm:p-7 min-h-[520px] flex flex-col justify-between">
+            
+            <!-- Навігація по кроках -->
+            <div class="flex items-center justify-between border-b border-slate-700/80 pb-4 mb-5">
+                <div class="flex items-center gap-2">
+                    <span id="stageBadge" class="px-2.5 py-1 rounded-lg bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-mono-code text-xs font-bold">
+                        ЕТАП 0 / 5
+                    </span>
+                    <h2 id="stageTitle" class="text-lg sm:text-xl font-bold text-white">Брифінг Кіберзахисника</h2>
+                </div>
+            </div>
+
+            <!-- Динамічна робоча зона гри -->
+            <div id="gameWorkspace" class="flex-grow flex flex-col justify-between stage-enter">
+                <!-- Контент заповнюється через JavaScript -->
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Модальне вікно "База знань" -->
+    <div id="codexModal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel max-w-2xl w-full rounded-2xl p-6 max-h-[88vh] overflow-y-auto border border-cyan-400/40">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
+                <h3 class="text-xl font-bold text-cyan-300 flex items-center gap-2">
+                    <span>📘</span> Кодекс надійних паролів
+                </h3>
+                <button id="closeCodexBtn" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">
+                    ✕
+                </button>
+            </div>
+            
+            <div class="space-y-4 text-sm text-slate-300 leading-relaxed">
+                <div class="p-4 rounded-xl bg-slate-900/90 border border-cyan-500/20">
+                    <h4 class="font-bold text-white text-base mb-1">1. Яким має бути надійний пароль?</h4>
+                    <ul class="list-disc list-inside space-y-1 text-slate-300">
+                        <li><strong class="text-cyan-400">Довжина — головне:</strong> мінімум <span class="font-mono-code text-emerald-400">12–16 символів</span>. Кожен додатковий символ у десятки разів збільшує час підбору пароля програмами-зломщиками.</li>
+                        <li><strong class="text-cyan-400">Різноманіття символів:</strong> поєднання великих (<span class="font-mono-code">A-Z</span>) і малих (<span class="font-mono-code">a-z</span>) літер, цифр (<span class="font-mono-code">0-9</span>) та спеціальних символів (<span class="font-mono-code">!@#$%^&*</span>).</li>
+                        <li><strong class="text-cyan-400">Жодної особистої інформації:</strong> дати народження, імена домашніх улюбленців, номери телефонів чи слова на кшталт <span class="font-mono-code text-rose-400">qwerty123</span> зламуються за частки секунди.</li>
+                    </ul>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-900/90 border border-emerald-500/20">
+                    <h4 class="font-bold text-white text-base mb-1">2. Як легко придумати складний пароль?</h4>
+                    <p class="mb-2">Використовуйте <strong class="text-emerald-400">метод парольної фрази (Passphrase)</strong>: візьміть 3–4 випадкові, не пов'язані між собою слова та з'єднайте їх цифрами і спецсимволами.</p>
+                    <div class="p-2.5 rounded-lg bg-slate-950 font-mono-code text-xs text-emerald-300 border border-emerald-500/30">
+                        Приклад: Синій#Кактус_Танцює2026!
+                    </div>
+                    <p class="mt-2 text-xs text-slate-400">Таку фразу легко уявити в голові, але комп'ютеру знадобляться мільйони років для її підбору.</p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-slate-900/90 border border-rose-500/30">
+                    <h4 class="font-bold text-rose-400 text-base mb-1">3. Чому НЕ МОЖНА використовувати один пароль для всіх акаунтів?</h4>
+                    <p class="mb-2">Це створює смертельно небезпечний <strong>«Ефект доміно» (атака Credential Stuffing)</strong>:</p>
+                    <p>Навіть якщо ваш пароль дуже складний, будь-який сторонній сайт (форум, інтернет-магазин, гра) може зазнати хакерської атаки та витоку бази даних. Зловмисники беруть вашу пошту й цей пароль і автоматично перевіряють їх у <strong>вашій пошті, соцмережах та онлайн-банкінгу</strong>. Якщо пароль скрізь однаковий — ви втрачаєте все одразу.</p>
+                    <p class="mt-2 text-cyan-300 font-medium">Рішення: 1 акаунт = 1 унікальний пароль + Менеджер паролів + Двофакторна аутентифікація (2FA).</p>
+                </div>
+            </div>
+
+            <div class="mt-5 flex justify-end">
+                <button id="closeCodexBottomBtn" class="btn-cyber px-5 py-2.5 rounded-xl font-bold text-white text-sm">
+                    Зрозуміло, повернутися до гри
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальне вікно персоналізованого Сертифіката -->
+    <div id="certificateModal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="glass-panel max-w-3xl w-full rounded-2xl p-4 sm:p-6 max-h-[92vh] overflow-y-auto border border-emerald-400/50 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                <h3 class="text-lg sm:text-xl font-bold text-emerald-300 flex items-center gap-2">
+                    <span>🏆</span> Ваш Сертифікат Кіберзахисника
+                </h3>
+                <button id="closeCertModalBtn" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Попередній перегляд згенерованого сертифіката -->
+            <div class="w-full rounded-xl overflow-hidden border border-cyan-500/40 bg-slate-950 shadow-2xl">
+                <canvas id="certificateCanvas" width="1200" height="850" class="w-full h-auto block"></canvas>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+                <span class="text-xs text-slate-400">Сертифікат сформовано автоматично на основі ваших результатів</span>
+                <div class="flex flex-wrap gap-2.5 w-full sm:w-auto justify-end">
+                    <button id="downloadCertBtn" class="btn-emerald w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2">
+                        <span>⬇️ Завантажити сертифікат (PNG)</span>
+                    </button>
+                    <button id="closeCertBottomBtn" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-sm transition">
+                        Закрити
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Системне сповіщення (Toast замість alert) -->
+    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="px-4 py-3 rounded-xl bg-slate-900 border border-cyan-400 shadow-2xl flex items-center gap-3">
+            <span id="toastIcon" class="text-xl">🛡️</span>
+            <div>
+                <div id="toastTitle" class="text-sm font-bold text-white">Броню оновлено!</div>
+                <div id="toastMsg" class="text-xs text-cyan-300">Елемент успішно встановлено.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-3 text-xs text-slate-500 border-t border-slate-800/60">
+        Інтерактивний тренажер з кібергігієни • «Одягаємо броню: технічний захист»
+    </footer>
+
+    <script>
+        /**
+         * ============================================================================
+         * ЗВУКОВИЙ РУШІЙ (Web Audio API — синтезовані звуки без зовнішніх файлів)
+         * ============================================================================
+         */
+        class SoundEffects {
+            constructor() {
+                this.enabled = true;
+                this.ctx = null;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) {
+                        this.ctx = new AudioCtx();
+                    }
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playTone(freq, type, duration, vol = 0.15, delay = 0) {
+                if (!this.enabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + delay);
+
+                    gain.gain.setValueAtTime(vol, this.ctx.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + delay + duration);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(this.ctx.currentTime + delay);
+                    osc.stop(this.ctx.currentTime + delay + duration);
+                } catch (e) {
+                    // Ігноруємо помилки автозапуску аудіо до першого кліку
+                }
+            }
+
+            // Звук одягання елемента броні
+            playArmorEquip() {
+                this.playTone(220, 'triangle', 0.18, 0.2, 0);
+                this.playTone(330, 'sine', 0.22, 0.2, 0.08);
+                this.playTone(523.25, 'sine', 0.35, 0.22, 0.16);
+                this.playTone(659.25, 'triangle', 0.45, 0.2, 0.24);
+            }
+
+            // Звук успішної дії / кліку
+            playSuccess() {
+                this.playTone(440, 'sine', 0.12, 0.15, 0);
+                this.playTone(587.33, 'sine', 0.2, 0.15, 0.08);
+            }
+
+            // Звук помилки / кібератаки
+            playAlert() {
+                this.playTone(180, 'sawtooth', 0.2, 0.16, 0);
+                this.playTone(140, 'sawtooth', 0.28, 0.16, 0.12);
+            }
+
+            // Фінальна перемога
+            playVictory() {
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((n, idx) => {
+                    this.playTone(n, 'triangle', 0.35, 0.2, idx * 0.12);
+                });
+            }
+        }
+
+        const sfx = new SoundEffects();
+
+        /**
+         * ============================================================================
+         * СТАН ГРИ ТА ДОПОМІЖНІ ФУНКЦІЇ
+         * ============================================================================
+         */
+        const gameState = {
+            currentStage: 0, // 0: Інтро, 1..5: Етапи броні, 6: Фінал
+            score: 0,
+            playerName: '',
+            equipped: {
+                helmet: false,
+                chest: false,
+                gauntlets: false,
+                shield: false,
+                aura: false
+            }
+        };
+
+        let toastTimer = null;
+
+        function showToast(title, msg, icon = '🛡️') {
+            const toast = document.getElementById('toastNotification');
+            if (!toast) return;
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMsg').textContent = msg;
+            document.getElementById('toastIcon').textContent = icon;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3400);
+        }
+
+        function addScore(points) {
+            gameState.score += points;
+            const scoreEl = document.getElementById('scoreDisplay');
+            if (scoreEl) {
+                scoreEl.textContent = `${gameState.score} XP`;
+            }
+        }
+
+        function equipArmor(pieceKey, slotNum, titleText, descText) {
+            gameState.equipped[pieceKey] = true;
+
+            const layer = document.getElementById(`armor-${pieceKey}`);
+            if (layer) {
+                layer.classList.add('equipped');
+            }
+
+            const slot = document.getElementById(`slot-${slotNum}`);
+            if (slot) {
+                slot.className = 'p-2 rounded-xl bg-cyan-950/80 border border-cyan-400 text-center transition shadow-lg shadow-cyan-500/20';
+                const label = slot.querySelector('div:last-child');
+                if (label) {
+                    label.className = 'text-[10px] font-bold text-cyan-300 leading-tight mt-0.5';
+                }
+            }
+
+            const equippedCount = Object.values(gameState.equipped).filter(Boolean).length;
+            const percent = equippedCount * 20;
+
+            const bar = document.getElementById('armorProgressBar');
+            const percentText = document.getElementById('armorPercentText');
+            if (bar) bar.style.width = `${percent}%`;
+            if (percentText) percentText.textContent = `${percent}% Захисту`;
+
+            const statusCard = document.getElementById('heroStatusCard');
+            if (statusCard) {
+                statusCard.innerHTML = `
+                    <strong class="text-emerald-400 block mb-1">✔ Екіпіровано: ${titleText}</strong>
+                    ${descText}
+                `;
+            }
+
+            sfx.playArmorEquip();
+            showToast(`Одягнуто: ${titleText}`, `Рівень технічного захисту: ${percent}%`, '🛡️');
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        /**
+         * ============================================================================
+         * РЕНДЕРИНГ УСІХ ІГРОВИХ ЕТАПІВ (0 .. 6)
+         * ============================================================================
+         */
+        function renderStage(stageNum) {
+            gameState.currentStage = stageNum;
+            const workspace = document.getElementById('gameWorkspace');
+            const badge = document.getElementById('stageBadge');
+            const title = document.getElementById('stageTitle');
+
+            if (!workspace || !badge || !title) return;
+
+            // Перезапуск анімації появи контенту
+            workspace.classList.remove('stage-enter');
+            void workspace.offsetWidth;
+            workspace.classList.add('stage-enter');
+
+            // ------------------------------------------------------------------------
+            // ЕТАП 0: ВСТУПНИЙ БРИФІНГ
+            // ------------------------------------------------------------------------
+            if (stageNum === 0) {
+                badge.textContent = 'ЕТАП 0 / 5';
+                title.textContent = 'Брифінг Кіберзахисника';
+
+                workspace.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-cyan-950/70 to-slate-900 border border-cyan-500/30">
+                            <h3 class="text-lg sm:text-xl font-extrabold text-white mb-2">
+                                Чому паролі — це твоя перша лінія броні? 🛡️
+                            </h3>
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                У цифровому світі твої пошта, соцмережі, ігрові профілі та банківські додатки захищені ключами — <strong class="text-cyan-300">паролями</strong>. Якщо ключ слабкий або однаковий для всіх дверей, зловмисники зламають його за лічені секунди.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-700">
+                                <div class="text-xl mb-1">🪖 🦺</div>
+                                <div class="font-bold text-cyan-300 mb-1">1. Сила та фрази</div>
+                                <p class="text-slate-400">Навчишся створювати надміцні паролі, які легко запам'ятати, але неможливо підібрати.</p>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-700">
+                                <div class="text-xl mb-1">🧤</div>
+                                <div class="font-bold text-emerald-300 mb-1">2. Унікальність ключів</div>
+                                <p class="text-slate-400">Побачиш на симуляторі, чому один пароль для всіх сайтів спричиняє «ефект доміно».</p>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-700">
+                                <div class="text-xl mb-1">🛡️ ⚡</div>
+                                <div class="font-bold text-amber-300 mb-1">3. Щит 2FA та Сертифікат</div>
+                                <p class="text-slate-400">Опануєш менеджер паролів, двофакторний захист та отримаєш іменний сертифікат.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 flex items-start gap-2.5">
+                            <span class="text-base">💡</span>
+                            <span>Під час гри ти можеш у будь-який момент відкрити <strong>«Базу знань»</strong> у верхньому меню, щоб повторити правила кібербезпеки.</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800 flex justify-end">
+                        <button id="startMissionBtn" class="btn-cyber w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-white text-sm sm:text-base flex items-center justify-center gap-2">
+                            <span>🚀 Розпочати кування броні</span>
+                        </button>
+                    </div>
+                `;
+
+                document.getElementById('startMissionBtn').addEventListener('click', () => {
+                    sfx.playSuccess();
+                    renderStage(1);
+                });
+            }
+
+            // ------------------------------------------------------------------------
+            // ЕТАП 1: ШОЛОМ — КУЗНЯ НАДІЙНОГО ПАРОЛЯ
+            // ------------------------------------------------------------------------
+            else if (stageNum === 1) {
+                badge.textContent = 'ЕТАП 1 / 5 • ШОЛОМ';
+                title.textContent = 'Кузня надійного пароля';
+
+                workspace.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            Щоб викувати <strong class="text-cyan-300">Шолом Складності</strong>, створи у полі нижче надміцний тестовий пароль (не використовуй свій справжній пароль від пошти!). Виконай усі 5 критеріїв захисту:
+                        </p>
+
+                        <!-- Поле введення пароля -->
+                        <div class="p-4 rounded-2xl bg-slate-900/95 border border-cyan-500/30 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <label for="forgePasswordInput" class="text-xs font-bold uppercase tracking-wider text-cyan-400">
+                                    Введи пароль для випробування:
+                                </label>
+                                <span id="pwdLengthBadge" class="font-mono-code text-xs text-slate-400">0 символів</span>
+                            </div>
+
+                            <div class="relative flex items-center">
+                                <input id="forgePasswordInput" type="text" autocomplete="off"
+                                    placeholder="Напр.: Кібер_Дракон#2026!"
+                                    class="w-full px-4 py-3 pr-12 rounded-xl bg-slate-950 border border-slate-700 focus:border-cyan-400 focus:outline-none font-mono-code text-sm sm:text-base text-white">
+                                <button id="togglePwdVisBtn" type="button" title="Сховати/показати пароль"
+                                    class="absolute right-3 p-1.5 rounded-lg text-slate-400 hover:text-cyan-300">
+                                    👁️
+                                </button>
+                            </div>
+
+                            <!-- Оцінка часу злому -->
+                            <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-xs text-slate-400">Орієнтовний час злому програмою-перебором:</span>
+                                <span id="crackTimeDisplay" class="font-mono-code text-xs sm:text-sm font-bold text-rose-400">
+                                    Миттєво (0 сек)
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Чекліст 5 правил надійного пароля -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <div id="chk-len" class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-400 flex items-center gap-2">
+                                <span>⬜</span> <span>Мінімум <strong>12 символів</strong></span>
+                            </div>
+                            <div id="chk-case" class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-400 flex items-center gap-2">
+                                <span>⬜</span> <span>Великі та малі літери (<strong>A-z / А-я</strong>)</span>
+                            </div>
+                            <div id="chk-num" class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-400 flex items-center gap-2">
+                                <span>⬜</span> <span>Містить цифри (<strong>0–9</strong>)</span>
+                            </div>
+                            <div id="chk-sym" class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-400 flex items-center gap-2">
+                                <span>⬜</span> <span>Спецсимволи (<strong>!@#$%^&*_-</strong>)</span>
+                            </div>
+                            <div id="chk-pattern" class="sm:col-span-2 p-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-slate-400 flex items-center gap-2">
+                                <span>⬜</span> <span>Без простих шаблонів (<strong>qwerty, 12345, password, admin</strong>)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                        <span class="text-xs text-slate-400">Нагорода: <strong class="text-amber-400">+200 XP</strong> та Шолом</span>
+                        <button id="forgeHelmetBtn" disabled class="btn-emerald w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-white text-sm">
+                            🪖 Викувати Шолом Складності
+                        </button>
+                    </div>
+                `;
+
+                const input = document.getElementById('forgePasswordInput');
+                const toggleVisBtn = document.getElementById('togglePwdVisBtn');
+                const forgeBtn = document.getElementById('forgeHelmetBtn');
+
+                toggleVisBtn.addEventListener('click', () => {
+                    input.type = input.type === 'text' ? 'password' : 'text';
+                });
+
+                const updateCheckItem = (id, passed) => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    const iconSpan = el.querySelector('span:first-child');
+                    if (passed) {
+                        el.className = el.className.replace('border-slate-700 text-slate-400', 'border-emerald-500/50 text-emerald-300 bg-emerald-950/30');
+                        if (iconSpan) iconSpan.textContent = '✅';
+                    } else {
+                        el.className = el.className
+                            .replace('border-emerald-500/50 text-emerald-300 bg-emerald-950/30', 'border-slate-700 text-slate-400');
+                        if (iconSpan) iconSpan.textContent = '⬜';
+                    }
+                };
+
+                const evaluatePassword = () => {
+                    const pwd = input.value;
+                    document.getElementById('pwdLengthBadge').textContent = `${pwd.length} символів`;
+
+                    const hasLen = pwd.length >= 12;
+                    const hasLower = /[a-zа-яіїєґ]/.test(pwd);
+                    const hasUpper = /[A-ZА-ЯІЇЄҐ]/.test(pwd);
+                    const hasCase = hasLower && hasUpper;
+                    const hasNum = /[0-9]/.test(pwd);
+                    const hasSym = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(pwd);
+                    const weakPatterns = /(qwerty|12345|123456|password|admin|пароль|11111|00000|abcdef)/i;
+                    const noPattern = pwd.length > 0 && !weakPatterns.test(pwd);
+
+                    updateCheckItem('chk-len', hasLen);
+                    updateCheckItem('chk-case', hasCase);
+                    updateCheckItem('chk-num', hasNum);
+                    updateCheckItem('chk-sym', hasSym);
+                    updateCheckItem('chk-pattern', noPattern);
+
+                    const crackEl = document.getElementById('crackTimeDisplay');
+                    const scoreCriteria = [hasLen, hasCase, hasNum, hasSym, noPattern].filter(Boolean).length;
+
+                    if (pwd.length === 0) {
+                        crackEl.textContent = 'Миттєво (0 сек)';
+                        crackEl.className = 'font-mono-code text-xs sm:text-sm font-bold text-rose-400';
+                    } else if (!noPattern || pwd.length < 7) {
+                        crackEl.textContent = 'Менше 1 секунди 💀';
+                        crackEl.className = 'font-mono-code text-xs sm:text-sm font-bold text-rose-400';
+                    } else if (scoreCriteria < 4 || pwd.length < 10) {
+                        crackEl.textContent = 'Кілька годин або днів ⚠️';
+                        crackEl.className = 'font-mono-code text-xs sm:text-sm font-bold text-amber-400';
+                    } else if (scoreCriteria < 5) {
+                        crackEl.textContent = 'Кілька місяців (майже готово!)';
+                        crackEl.className = 'font-mono-code text-xs sm:text-sm font-bold text-cyan-400';
+                    } else {
+                        crackEl.textContent = 'Понад 34 000 років 🔥';
+                        crackEl.className = 'font-mono-code text-xs sm:text-sm font-bold text-emerald-400';
+                    }
+
+                    forgeBtn.disabled = !(hasLen && hasCase && hasNum && hasSym && noPattern);
+                };
+
+                input.addEventListener('input', evaluatePassword);
+
+                forgeBtn.addEventListener('click', () => {
+                    addScore(200);
+                    equipArmor(
+                        'helmet',
+                        1,
+                        'Шолом Складності',
+                        'Довжина 12+ символів, різні регістри, цифри та спецсимволи захищають від грубого перебору.'
+                    );
+                    renderStage(2);
+                });
+            }
+
+            // ------------------------------------------------------------------------
+            // ЕТАП 2: КІРАСА — ЯК ЛЕГКО СТВОРЮВАТИ ПАРОЛЬНІ ФРАЗИ (PASSPHRASE)
+            // ------------------------------------------------------------------------
+            else if (stageNum === 2) {
+                badge.textContent = 'ЕТАП 2 / 5 • КІРАСА';
+                title.textContent = 'Мистецтво парольних фраз';
+
+                const adjectives = ['Космічний', 'Срібний', 'Веселий', 'Крижаний', 'Швидкий', 'Сонячний'];
+                const nouns = ['Кактус', 'Єнот', 'Дирижабль', 'Пінгвін', 'Компас', 'Фенікс'];
+                const verbs = ['Танцює', 'Мандрує', 'Світиться', 'Співає', 'Малює', 'Стрибає'];
+                const endings = ['#2026!', '@74$', '_98*', '!52&', '#83%', '@49!'];
+
+                let selectedAdj = adjectives[0];
+                let selectedNoun = nouns[0];
+                let selectedVerb = verbs[0];
+                let selectedEnd = endings[0];
+                let testedTrap = false;
+
+                workspace.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/25 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            <strong class="text-cyan-300">Секрет кіберзахисників:</strong> не потрібно зазубрювати абракадабру на кшталт <span class="font-mono-code text-slate-400">x9#Kp2$vL</span>. Поєднай <strong>3 випадкові образні слова</strong>, цифри та спецсимволи у <strong>парольну фразу</strong> — її легко уявити в голові, а зламати нереально!
+                        </div>
+
+                        <!-- Інтерактивний генератор парольної фрази -->
+                        <div class="p-4 rounded-2xl bg-slate-900/95 border border-emerald-500/30 space-y-3">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Конструктор парольної фрази:</span>
+                                <button id="randomizePhraseBtn" type="button" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs font-semibold text-cyan-300 transition">
+                                    🎲 Згенерувати нову фразу
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <select id="selAdj" class="px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+                                    ${adjectives.map(w => `<option value="${w}">${w}</option>`).join('')}
+                                </select>
+                                <select id="selNoun" class="px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+                                    ${nouns.map(w => `<option value="${w}">${w}</option>`).join('')}
+                                </select>
+                                <select id="selVerb" class="px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:border-cyan-400 focus:outline-none">
+                                    ${verbs.map(w => `<option value="${w}">${w}</option>`).join('')}
+                                </select>
+                                <select id="selEnd" class="px-2.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-amber-300 font-mono-code focus:border-cyan-400 focus:outline-none">
+                                    ${endings.map(w => `<option value="${w}">${w}</option>`).join('')}
+                                </select>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-slate-950 border border-emerald-500/40 flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <div class="text-[11px] text-slate-400">Твоя парольна фраза:</div>
+                                    <div id="phrasePreview" class="font-mono-code text-sm sm:text-base font-bold text-emerald-300 mt-0.5">
+                                        Космічний_Кактус_Танцює#2026!
+                                    </div>
+                                </div>
+                                <span id="phraseLenTag" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-mono-code text-xs font-bold">
+                                    29 символів
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Міні-перевірка: чого НЕ варто додавати в пароль -->
+                        <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-700 space-y-2.5">
+                            <div class="text-xs font-bold text-white">
+                                Перевірка інтуїції: який варіант пароля є <span class="text-rose-400">НЕБЕЗПЕЧНИМ</span>, бо хакери легко знайдуть підказки у твоїх соцмережах?
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                                <button type="button" data-choice="bad" class="trap-btn p-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-700 text-left transition">
+                                    <div class="font-mono-code font-bold text-amber-300">Barsik_15052010</div>
+                                    <div class="text-slate-400 mt-0.5">Ім'я домашнього кота + дата народження</div>
+                                </button>
+                                <button type="button" data-choice="good" class="trap-btn p-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-700 text-left transition">
+                                    <div class="font-mono-code font-bold text-cyan-300">Срібний_Фенікс_Співає@74$</div>
+                                    <div class="text-slate-400 mt-0.5">3 непов'язані образні слова + знаки</div>
+                                </button>
+                            </div>
+                            <div id="trapFeedback" class="text-xs hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                        <span class="text-xs text-slate-400">Нагорода: <strong class="text-amber-400">+200 XP</strong> та Кіраса</span>
+                        <button id="equipChestBtn" disabled class="btn-emerald w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-white text-sm">
+                            🦺 Одягнути Кірасу Парольних Фраз
+                        </button>
+                    </div>
+                `;
+
+                const updatePhrase = () => {
+                    selectedAdj = document.getElementById('selAdj').value;
+                    selectedNoun = document.getElementById('selNoun').value;
+                    selectedVerb = document.getElementById('selVerb').value;
+                    selectedEnd = document.getElementById('selEnd').value;
+                    const fullPhrase = `${selectedAdj}_${selectedNoun}_${selectedVerb}${selectedEnd}`;
+                    document.getElementById('phrasePreview').textContent = fullPhrase;
+                    document.getElementById('phraseLenTag').textContent = `${fullPhrase.length} символів`;
+                };
+
+                ['selAdj', 'selNoun', 'selVerb', 'selEnd'].forEach(id => {
+                    document.getElementById(id).addEventListener('change', () => {
+                        sfx.playSuccess();
+                        updatePhrase();
+                    });
+                });
+
+                document.getElementById('randomizePhraseBtn').addEventListener('click', () => {
+                    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+                    document.getElementById('selAdj').value = pick(adjectives);
+                    document.getElementById('selNoun').value = pick(nouns);
+                    document.getElementById('selVerb').value = pick(verbs);
+                    document.getElementById('selEnd').value = pick(endings);
+                    sfx.playSuccess();
+                    updatePhrase();
+                });
+
+                document.querySelectorAll('.trap-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const feedback = document.getElementById('trapFeedback');
+                        const choice = btn.getAttribute('data-choice');
+                        feedback.classList.remove('hidden');
+
+                        if (choice === 'bad') {
+                            sfx.playSuccess();
+                            testedTrap = true;
+                            btn.classList.add('border-emerald-500', 'bg-emerald-950/30');
+                            feedback.className = 'text-xs text-emerald-300 p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30';
+                            feedback.innerHTML = '✅ <strong>Правильно!</strong> Імена улюбленців, дати народження та номери телефонів — це перше, що перевіряють зловмисники за допомогою автоматизованих словників.';
+                            document.getElementById('equipChestBtn').disabled = false;
+                        } else {
+                            sfx.playAlert();
+                            feedback.className = 'text-xs text-rose-300 p-2.5 rounded-lg bg-rose-950/40 border border-rose-500/30';
+                            feedback.innerHTML = '⚠️ Ні, це якраз <strong>надійна парольна фраза</strong>! Обери варіант, який містить особисті дані користувача.';
+                        }
+                    });
+                });
+
+                document.getElementById('equipChestBtn').addEventListener('click', () => {
+                    if (!testedTrap) return;
+                    addScore(200);
+                    equipArmor(
+                        'chest',
+                        2,
+                        'Кіраса Парольних Фраз',
+                        'Образні фрази з 3+ слів без особистих даних забезпечують високу стійкість і легке запам’ятовування.'
+                    );
+                    renderStage(3);
+                });
+            }
+
+            // ------------------------------------------------------------------------
+            // ЕТАП 3: РУКАВИЦІ — СИМУЛЯТОР «ЕФЕКТУ ДОМІНО» (ЧОМУ НЕ 1 ПАРОЛЬ ДЛЯ ВСЬОГО)
+            // ------------------------------------------------------------------------
+            else if (stageNum === 3) {
+                badge.textContent = 'ЕТАП 3 / 5 • РУКАВИЦІ';
+                title.textContent = 'Симулятор «Ефекту доміно»';
+
+                let breachSimulated = false;
+                let isolatedFixed = false;
+
+                workspace.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            Уяви, що ти придумав складний пароль, але використав його <strong class="text-rose-400">однаковим для всіх 4 акаунтів</strong>. Натисни кнопку симуляції витоку даних на ігровому форумі та подивись, що відбудеться!
+                        </p>
+
+                        <!-- Мережа 4 акаунтів -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div id="node-forum" class="p-3.5 rounded-xl bg-slate-900 border border-slate-700 transition-all">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-sm text-white">🎮 Ігровий форум</span>
+                                    <span id="status-forum" class="text-[11px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-300">Активний</span>
+                                </div>
+                                <div id="key-forum" class="text-xs font-mono-code text-cyan-300 mt-1.5">Пароль: MegaDragon#2026</div>
+                            </div>
+
+                            <div id="node-email" class="p-3.5 rounded-xl bg-slate-900 border border-slate-700 transition-all">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-sm text-white">📧 Головна Пошта</span>
+                                    <span id="status-email" class="text-[11px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-300">Активний</span>
+                                </div>
+                                <div id="key-email" class="text-xs font-mono-code text-cyan-300 mt-1.5">Пароль: MegaDragon#2026</div>
+                            </div>
+
+                            <div id="node-social" class="p-3.5 rounded-xl bg-slate-900 border border-slate-700 transition-all">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-sm text-white">💬 Соцмережа</span>
+                                    <span id="status-social" class="text-[11px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-300">Активний</span>
+                                </div>
+                                <div id="key-social" class="text-xs font-mono-code text-cyan-300 mt-1.5">Пароль: MegaDragon#2026</div>
+                            </div>
+
+                            <div id="node-bank" class="p-3.5 rounded-xl bg-slate-900 border border-slate-700 transition-all">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold text-sm text-white">🏦 Онлайн-Банкінг</span>
+                                    <span id="status-bank" class="text-[11px] font-mono-code px-2 py-0.5 rounded bg-slate-800 text-slate-300">Активний</span>
+                                </div>
+                                <div id="key-bank" class="text-xs font-mono-code text-cyan-300 mt-1.5">Пароль: MegaDragon#2026</div>
+                            </div>
+                        </div>
+
+                        <!-- Панель керування симуляцією -->
+                        <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                            <div id="dominoLog" class="text-xs text-slate-300 leading-relaxed">
+                                Крок 1: Запусти симуляцію атаки <strong>Credential Stuffing</strong> (підстановка викрадених паролів).
+                            </div>
+                            <div class="flex flex-wrap gap-2.5">
+                                <button id="simulateBreachBtn" type="button" class="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 font-bold text-white text-xs sm:text-sm transition shadow-lg shadow-rose-600/25">
+                                    💥 1. Симулювати витік бази форуму
+                                </button>
+                                <button id="applyUniqueKeysBtn" type="button" disabled class="btn-cyber px-4 py-2.5 rounded-xl font-bold text-white text-xs sm:text-sm">
+                                    🔑 2. Встановити унікальні паролі
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                        <span class="text-xs text-slate-400">Нагорода: <strong class="text-amber-400">+250 XP</strong> та Рукавиці</span>
+                        <button id="equipGauntletsBtn" disabled class="btn-emerald w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-white text-sm">
+                            🧤 Одягнути Рукавиці Унікальності
+                        </button>
+                    </div>
+                `;
+
+                const breachBtn = document.getElementById('simulateBreachBtn');
+                const uniqueBtn = document.getElementById('applyUniqueKeysBtn');
+                const logBox = document.getElementById('dominoLog');
+
+                breachBtn.addEventListener('click', () => {
+                    if (breachSimulated) return;
+                    breachSimulated = true;
+                    breachBtn.disabled = true;
+                    breachBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+                    const nodes = ['forum', 'email', 'social', 'bank'];
+                    const messages = [
+                        '🚨 Базу ігрового форуму зламано! Хакери отримали пошту та пароль MegaDragon#2026...',
+                        '🚨 Бот-мережа підставила цей самий пароль у Головну Пошту — ВХІД ВИКОНАНО!',
+                        '🚨 Через однаковий пароль зламано Соцмережу!',
+                        '💀 КРИТИЧНИЙ ЗЛАМ: Онлайн-Банкінг скомпрометовано через ефект доміно!'
+                    ];
+
+                    nodes.forEach((n, idx) => {
+                        setTimeout(() => {
+                            sfx.playAlert();
+                            const card = document.getElementById(`node-${n}`);
+                            const status = document.getElementById(`status-${n}`);
+                            if (card) card.classList.add('compromised-node');
+                            if (status) {
+                                status.textContent = 'ЗЛАМАНО!';
+                                status.className = 'text-[11px] font-mono-code px-2 py-0.5 rounded bg-rose-600 text-white font-bold';
+                            }
+                            logBox.innerHTML = `<span class="text-rose-300 font-semibold">${messages[idx]}</span>`;
+
+                            if (idx === nodes.length - 1) {
+                                uniqueBtn.disabled = false;
+                            }
+                        }, idx * 550);
+                    });
+                });
+
+                uniqueBtn.addEventListener('click', () => {
+                    if (!breachSimulated || isolatedFixed) return;
+                    isolatedFixed = true;
+                    uniqueBtn.disabled = true;
+                    sfx.playSuccess();
+
+                    // Форум залишається ізольованим інцидентом, інші 3 захищені унікальними паролями
+                    document.getElementById('status-forum').textContent = 'Ізольовано (пароль змінено)';
+                    document.getElementById('status-forum').className = 'text-[11px] font-mono-code px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold';
+                    document.getElementById('node-forum').classList.remove('compromised-node');
+                    document.getElementById('node-forum').classList.add('border-amber-500/50');
+                    document.getElementById('key-forum').textContent = 'Новий ключ: Синій_Вовк#81!';
+
+                    const safeNodes = [
+                        { id: 'email', key: 'Квантовий_Чайник@94$' },
+                        { id: 'social', key: 'Швидка_Комета_37*' },
+                        { id: 'bank', key: 'Залізний_Сейф#992!' }
+                    ];
+
+                    safeNodes.forEach(item => {
+                        const card = document.getElementById(`node-${item.id}`);
+                        const status = document.getElementById(`status-${item.id}`);
+                        const keyEl = document.getElementById(`key-${item.id}`);
+                        if (card) {
+                            card.classList.remove('compromised-node');
+                            card.classList.add('border-emerald-500/60', 'bg-emerald-950/20');
+                        }
+                        if (status) {
+                            status.textContent = '🛡️ ЗАХИЩЕНО';
+                            status.className = 'text-[11px] font-mono-code px-2 py-0.5 rounded bg-emerald-600 text-white font-bold';
+                        }
+                        if (keyEl) {
+                            keyEl.textContent = `Унікальний ключ: ${item.key}`;
+                            keyEl.className = 'text-xs font-mono-code text-emerald-300 mt-1.5';
+                        }
+                    });
+
+                    logBox.innerHTML = `<span class="text-emerald-300">✅ <strong>Ефект доміно зупинено!</strong> Навіть якщо один сайт зазнає витоку, унікальні паролі гарантують, що пошта, соцмережі та банк залишаться у цілковитій безпеці.</span>`;
+                    document.getElementById('equipGauntletsBtn').disabled = false;
+                });
+
+                document.getElementById('equipGauntletsBtn').addEventListener('click', () => {
+                    if (!isolatedFixed) return;
+                    addScore(250);
+                    equipArmor(
+                        'gauntlets',
+                        3,
+                        'Рукавиці Унікальності',
+                        'Правило «1 акаунт = 1 унікальний пароль» повністю блокує ефект доміно при витоках баз даних.'
+                    );
+                    renderStage(4);
+                });
+            }
+
+            // ------------------------------------------------------------------------
+            // ЕТАП 4: ЕНЕРГОЩИТ — МЕНЕДЖЕР ПАРОЛІВ ТА 2FA
+            // ------------------------------------------------------------------------
+            else if (stageNum === 4) {
+                badge.textContent = 'ЕТАП 4 / 5 • ЩИТ 2FA';
+                title.textContent = 'Менеджер паролів та 2FA';
+
+                const questions = [
+                    {
+                        q: '1. У тебе 40 різних акаунтів, і для кожного потрібен унікальний складний пароль. Як їх надійно зберігати?',
+                        options: [
+                            { text: 'Записати всі у відкритий документ на робочому столі', ok: false },
+                            { text: 'Використовувати надійний Менеджер паролів із одним головним майстер-паролем', ok: true },
+                            { text: 'Використовувати один пароль, але змінювати останню цифру', ok: false }
+                        ]
+                    },
+                    {
+                        q: '2. Зловмисник дізнався твій пароль через фішинговий сайт і намагається увійти в акаунт. Що його зупинить?',
+                        options: [
+                            { text: 'Двофакторна аутентифікація (2FA) — запит одноразового коду або підтвердження на телефоні', ok: true },
+                            { text: 'Зміна шпалер на робочому столі', ok: false },
+                            { text: 'Режим інкогніто у браузері', ok: false }
+                        ]
+                    }
+                ];
+
+                const solved = [false, false];
+
+                workspace.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            Щоб активувати <strong class="text-emerald-300">Енергощит 2FA</strong>, налаштуй два ключові рівні технічного захисту:
+                        </p>
+
+                        <div class="space-y-3">
+                            ${questions.map((item, qIdx) => `
+                                <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-700 space-y-2.5">
+                                    <div class="text-xs sm:text-sm font-bold text-white">${item.q}</div>
+                                    <div class="space-y-2">
+                                        ${item.options.map((opt, oIdx) => `
+                                            <button type="button" data-q="${qIdx}" data-ok="${opt.ok}"
+                                                class="q4-opt w-full p-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-700 text-left text-xs text-slate-200 transition flex items-center gap-2">
+                                                <span class="font-mono-code text-cyan-400 font-bold">${String.fromCharCode(65 + oIdx)}.</span>
+                                                <span>${opt.text}</span>
+                                            </button>
+                                        `).join('')}
+                                    </div>
+                                    <div id="q4-fb-${qIdx}" class="text-xs hidden"></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                        <span class="text-xs text-slate-400">Нагорода: <strong class="text-amber-400">+250 XP</strong> та Щит 2FA</span>
+                        <button id="equipShieldBtn" disabled class="btn-emerald w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-white text-sm">
+                            🛡️ Активувати Енергощит 2FA
+                        </button>
+                    </div>
+                `;
+
+                document.querySelectorAll('.q4-opt').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const qIdx = Number(btn.getAttribute('data-q'));
+                        const isOk = btn.getAttribute('data-ok') === 'true';
+                        const fb = document.getElementById(`q4-fb-${qIdx}`);
+                        fb.classList.remove('hidden');
+
+                        if (isOk) {
+                            sfx.playSuccess();
+                            solved[qIdx] = true;
+                            btn.className = 'q4-opt w-full p-2.5 rounded-xl bg-emerald-950/50 border border-emerald-500 text-left text-xs text-emerald-200 font-semibold flex items-center gap-2';
+                            fb.className = 'text-xs text-emerald-300';
+                            fb.textContent = '✅ Точно! Це надійний стандарт технічного захисту.';
+                            if (solved[0] && solved[1]) {
+                                document.getElementById('equipShieldBtn').disabled = false;
+                            }
+                        } else {
+                            sfx.playAlert();
+                            btn.classList.add('border-rose-500', 'bg-rose-950/30');
+                            fb.className = 'text-xs text-rose-300';
+                            fb.textContent = '⚠️ Цей підхід залишає вразливість. Спробуй інший варіант!';
+                        }
+                    });
+                });
+
+                document.getElementById('equipShieldBtn').addEventListener('click', () => {
+                    if (!(solved[0] && solved[1])) return;
+                    addScore(250);
+                    equipArmor(
+                        'shield',
+                        4,
+                        'Енергощит 2FA та Менеджер',
+                        'Менеджер паролів зберігає сотні унікальних ключів, а 2FA блокує вхід навіть при викраденні пароля.'
+                    );
+                    renderStage(5);
+                });
+            }
+
+            // ------------------------------------------------------------------------
+            // ЕТАП 5: ЗАХИСНА АУРА — ФІНАЛЬНИЙ ІСПИТ ПРОТИ КІБЕРАТАК
+            // ------------------------------------------------------------------------
+            else if (stageNum === 5) {
+                badge.textContent = 'ЕТАП 5 / 5 • АУРА';
+                title.textContent = 'Відбиття фінальної кібератаки';
+
+                const waves = [
+                    {
+                        attack: '👾 Хвиля 1: Бот-атака підбирає паролі зі списку найпопулярніших («123456», «qwerty», «admin»). Твій захист:',
+                        choices: [
+                            { label: 'Парольна фраза на 16+ символів із літерами, цифрами та спецсимволами', valid: true },
+                            { label: 'Короткий пароль з 6 цифр, щоб швидше вводити', valid: false }
+                        ]
+                    },
+                    {
+                        attack: '👾 Хвиля 2: Старий інтернет-магазин допустив витік бази даних. Хакери перевіряють твою пошту на інших сайтах. Твій захист:',
+                        choices: [
+                            { label: 'Я всюди ставлю однаковий пароль, але нікому його не кажу', valid: false },
+                            { label: 'Унікальний пароль для кожного сервісу (1 сайт = 1 окремий ключ)', valid: true }
+                        ]
+                    },
+                    {
+                        attack: '👾 Хвиля 3: Шахраї надіслали підроблений лист і перехопили твій пароль від соцмережі. Твій останній рубіж:',
+                        choices: [
+                            { label: 'Увімкнена двофакторна аутентифікація (2FA) — без коду з телефону вхід неможливий', valid: true },
+                            { label: 'Видалити історію браузера', valid: false }
+                        ]
+                    }
+                ];
+
+                let currentWave = 0;
+
+                const renderWave = () => {
+                    const waveContainer = document.getElementById('bossWaveBox');
+                    if (!waveContainer) return;
+
+                    if (currentWave >= waves.length) {
+                        waveContainer.innerHTML = `
+                            <div class="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/50 text-center space-y-2">
+                                <div class="text-2xl">⚡🛡️⚡</div>
+                                <div class="font-bold text-emerald-300 text-base">Усі 3 хвилі кібератак успішно відбито!</div>
+                                <p class="text-xs text-slate-300">Ти готовий активувати Захисну Ауру та отримати іменний Сертифікат Кіберзахисника.</p>
+                            </div>
+                        `;
+                        document.getElementById('equipAuraBtn').disabled = false;
+                        return;
+                    }
+
+                    const w = waves[currentWave];
+                    waveContainer.innerHTML = `
+                        <div class="p-4 rounded-2xl bg-slate-900/95 border border-cyan-500/30 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-mono-code font-bold text-amber-400">ЗАГРОЗА ${currentWave + 1} З ${waves.length}</span>
+                                <span class="text-xs text-slate-400">Обери правильну контрміру</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-semibold text-white leading-relaxed">${w.attack}</p>
+                            <div class="space-y-2">
+                                ${w.choices.map(c => `
+                                    <button type="button" data-valid="${c.valid}"
+                                        class="wave-choice-btn w-full p-3 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-700 text-left text-xs sm:text-sm text-slate-200 transition">
+                                        🛡️ ${c.label}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div id="waveFeedback" class="text-xs hidden"></div>
+                        </div>
+                    `;
+
+                    document.querySelectorAll('.wave-choice-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const isValid = btn.getAttribute('data-valid') === 'true';
+                            const fb = document.getElementById('waveFeedback');
+                            fb.classList.remove('hidden');
+
+                            if (isValid) {
+                                sfx.playSuccess();
+                                currentWave++;
+                                renderWave();
+                            } else {
+                                sfx.playAlert();
+                                btn.classList.add('border-rose-500', 'bg-rose-950/30');
+                                fb.className = 'text-xs text-rose-300';
+                                fb.textContent = '⚠️ Атака пробила цей захист! Обери надійніший варіант.';
+                            }
+                        });
+                    });
+                };
+
+                workspace.innerHTML = `
+                    <div class="space-y-4">
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            Фінальне випробування! Застосуй усі здобуті знання, щоб відбити 3 хвилі реальних кібератак та зарядити <strong class="text-emerald-300">Захисну Ауру</strong>.
+                        </p>
+                        <div id="bossWaveBox"></div>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                        <span class="text-xs text-slate-400">Нагорода: <strong class="text-amber-400">+300 XP</strong> та Захисна Аура</span>
+                        <button id="equipAuraBtn" disabled class="btn-emerald w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-white text-sm">
+                            ⚡ Активувати Повну Ауру Захисту
+                        </button>
+                    </div>
+                `;
+
+                renderWave();
+
+                document.getElementById('equipAuraBtn').addEventListener('click', () => {
+                    if (currentWave < waves.length) return;
+                    addScore(300);
+                    equipArmor(
+                        'aura',
+                        5,
+                        'Повна Захисна Аура (100%)',
+                        'Усі 5 елементів технічної броні активовано! Твої акаунти під максимальним захистом.'
+                    );
+                    renderStage(6);
+                });
+            }
+
+            // ------------------------------------------------------------------------
+            // ЕТАП 6: ПЕРЕМОГА ТА СЕРТИФІКАТ КІБЕРЗАХИСНИКА
+            // ------------------------------------------------------------------------
+            else if (stageNum === 6) {
+                badge.textContent = 'МІСІЮ ВИКОНАНО';
+                title.textContent = 'Повна кібер-броня активована!';
+
+                workspace.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-950/60 via-cyan-950/50 to-slate-900 border border-emerald-400/50 text-center">
+                            <div class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-mono-code text-xs font-bold mb-2">
+                                100% ТЕХНІЧНИЙ ЗАХИСТ • ${gameState.score} XP
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-extrabold text-white">Вітаємо, Майстре Кіберзахисту!</h3>
+                            <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                                Ти зібрав усі 5 елементів броні та засвоїв золоті правила безпеки акаунтів.
+                            </p>
+                        </div>
+
+                        <!-- Форма запиту Прізвища та імені для отримання Сертифіката -->
+                        <div class="p-4 rounded-2xl bg-slate-900/95 border border-cyan-400/40 space-y-3 shadow-lg">
+                            <div class="flex items-center gap-2 text-cyan-300 font-bold text-sm">
+                                <span>🎓</span>
+                                <span>Отримання іменного Сертифіката про проходження тренажера</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Вкажи своє <strong class="text-white">Прізвище та ім'я</strong>, щоб ми вписали їх у твій офіційний сертифікат із результатом <span class="font-mono-code text-amber-400 font-bold">${gameState.score} XP</span>:
+                            </p>
+                            <div class="flex flex-col sm:flex-row gap-2.5">
+                                <input id="playerFullNameInput" type="text" maxlength="55"
+                                    value="${escapeHtml(gameState.playerName)}"
+                                    placeholder="Прізвище та ім'я (напр., Коваленко Олександр)"
+                                    class="flex-grow px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 focus:border-emerald-400 focus:outline-none text-sm text-white">
+                                <button id="generateCertBtn" class="btn-emerald px-5 py-2.5 rounded-xl font-bold text-white text-sm whitespace-nowrap flex items-center justify-center gap-1.5">
+                                    <span>🏆 Отримати сертифікат</span>
+                                </button>
+                            </div>
+                            <p id="certNameError" class="text-xs text-rose-400 hidden">
+                                ⚠️ Будь ласка, введіть ваше Прізвище та ім'я (мінімум 3 символи).
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                            <div class="p-3 rounded-xl bg-slate-900 border border-cyan-500/30">
+                                <div class="font-bold text-cyan-300 mb-0.5">1. Довжина та складність</div>
+                                <p class="text-slate-300">Мінімум 12–16 символів: великі й малі літери, цифри та спецсимволи.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-emerald-500/30">
+                                <div class="font-bold text-emerald-300 mb-0.5">2. Парольні фрази</div>
+                                <p class="text-slate-300">Поєднуй 3–4 випадкові слова зі знаками замість дат чи імен улюбленців.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-amber-500/30">
+                                <div class="font-bold text-amber-300 mb-0.5">3. Унікальність (1 сайт = 1 пароль)</div>
+                                <p class="text-slate-300">Не дублюй паролі: витік одного сайту не має загрожувати пошті чи банку.</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-purple-500/30">
+                                <div class="font-bold text-purple-300 mb-0.5">4. Менеджер паролів + 2FA</div>
+                                <p class="text-slate-300">Зберігай ключі в менеджері паролів і завжди вмикай двофакторний захист.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-slate-800 flex flex-wrap gap-3 justify-between items-center">
+                        <button id="openCodexBottomGameBtn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-300 font-semibold text-xs sm:text-sm transition">
+                            📘 Відкрити пам'ятку
+                        </button>
+                        <button id="restartGameBtn" class="btn-cyber px-6 py-2.5 rounded-xl font-bold text-white text-sm">
+                            🔄 Пройти тренажер ще раз
+                        </button>
+                    </div>
+                `;
+
+                const nameInput = document.getElementById('playerFullNameInput');
+                const genBtn = document.getElementById('generateCertBtn');
+                const errText = document.getElementById('certNameError');
+
+                const handleCreateCert = () => {
+                    const cleanedName = nameInput.value.trim().replace(/\s+/g, ' ');
+                    if (cleanedName.length < 3) {
+                        sfx.playAlert();
+                        errText.classList.remove('hidden');
+                        nameInput.classList.add('border-rose-500');
+                        nameInput.focus();
+                        return;
+                    }
+                    errText.classList.add('hidden');
+                    nameInput.classList.remove('border-rose-500');
+                    gameState.playerName = cleanedName;
+                    openCertificateModal(cleanedName);
+                };
+
+                genBtn.addEventListener('click', handleCreateCert);
+                nameInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') handleCreateCert();
+                });
+
+                document.getElementById('openCodexBottomGameBtn').addEventListener('click', () => {
+                    document.getElementById('openCodexBtn').click();
+                });
+
+                document.getElementById('restartGameBtn').addEventListener('click', resetGame);
+            }
+        }
+
+        /**
+         * ============================================================================
+         * ГЕНЕРАЦІЯ ТА ВІДОБРАЖЕННЯ ПЕРСОНАЛЬНОГО СЕРТИФІКАТА НА CANVAS
+         * ============================================================================
+         */
+        function drawRoundedRectPath(ctx, x, y, width, height, radius) {
+            const r = Math.min(radius, width / 2, height / 2);
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + width - r, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + r);
+            ctx.lineTo(x + width, y + height - r);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - r, y + height);
+            ctx.lineTo(x + r, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        function drawCertificateOnCanvas(fullName) {
+            const canvas = document.getElementById('certificateCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width;
+            const H = canvas.height;
+
+            // 1. Темний градієнтний фон сертифіката
+            const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+            bgGrad.addColorStop(0, '#050a18');
+            bgGrad.addColorStop(0.5, '#0b1630');
+            bgGrad.addColorStop(1, '#061124');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, W, H);
+
+            // 2. Декоративна кібер-сітка на фоні
+            ctx.strokeStyle = 'rgba(6, 182, 212, 0.06)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x <= W; x += 40) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, H);
+                ctx.stroke();
+            }
+            for (let y = 0; y <= H; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(W, y);
+                ctx.stroke();
+            }
+
+            // 3. Радіальне підсвічування по центру
+            const glow = ctx.createRadialGradient(W / 2, H / 2, 40, W / 2, H / 2, 520);
+            glow.addColorStop(0, 'rgba(16, 185, 129, 0.14)');
+            glow.addColorStop(0.6, 'rgba(6, 182, 212, 0.06)');
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, W, H);
+
+            // 4. Подвійна технологічна рамка
+            ctx.strokeStyle = '#06b6d4';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(32, 32, W - 64, H - 64);
+
+            ctx.strokeStyle = 'rgba(52, 211, 153, 0.45)';
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(46, 46, W - 92, H - 92);
+
+            // Кутові акценти
+            const cornerLen = 36;
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 6;
+            const corners = [
+                [32, 32, 1, 1],
+                [W - 32, 32, -1, 1],
+                [32, H - 32, 1, -1],
+                [W - 32, H - 32, -1, -1]
+            ];
+            corners.forEach(([cx, cy, dx, dy]) => {
+                ctx.beginPath();
+                ctx.moveTo(cx + dx * cornerLen, cy);
+                ctx.lineTo(cx, cy);
+                ctx.lineTo(cx, cy + dy * cornerLen);
+                ctx.stroke();
+            });
+
+            // 5. Емблема щита зверху по центру
+            ctx.save();
+            ctx.translate(W / 2, 125);
+            const shieldGrad = ctx.createLinearGradient(-35, -45, 35, 45);
+            shieldGrad.addColorStop(0, '#06b6d4');
+            shieldGrad.addColorStop(1, '#10b981');
+            ctx.fillStyle = shieldGrad;
+            ctx.beginPath();
+            ctx.moveTo(0, -46);
+            ctx.lineTo(40, -30);
+            ctx.lineTo(36, 10);
+            ctx.quadraticCurveTo(28, 36, 0, 48);
+            ctx.quadraticCurveTo(-28, 36, -36, 10);
+            ctx.lineTo(-40, -30);
+            ctx.closePath();
+            ctx.fill();
+
+            // Галочка всередині щита
+            ctx.strokeStyle = '#050a18';
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(-14, 2);
+            ctx.lineTo(-3, 14);
+            ctx.lineTo(17, -10);
+            ctx.stroke();
+            ctx.restore();
+
+            // 6. Текстові заголовки
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 18px Inter, sans-serif';
+            ctx.fillText('АКАДЕМІЯ КІБЕРГІГІЄНИ • «ОДЯГАЄМО БРОНЮ: ТЕХНІЧНИЙ ЗАХИСТ»', W / 2, 210);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '800 58px Inter, sans-serif';
+            ctx.fillText('СЕРТИФІКАТ', W / 2, 280);
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '500 22px Inter, sans-serif';
+            ctx.fillText('Цим документом підтверджується, що', W / 2, 338);
+
+            // 7. Прізвище та ім'я гравця
+            ctx.fillStyle = '#34d399';
+            ctx.font = '800 44px Inter, sans-serif';
+            ctx.fillText(fullName, W / 2, 405);
+
+            // Лінія під ім'ям
+            const nameWidth = Math.min(Math.max(ctx.measureText(fullName).width + 80, 420), 920);
+            const lineGrad = ctx.createLinearGradient(W / 2 - nameWidth / 2, 0, W / 2 + nameWidth / 2, 0);
+            lineGrad.addColorStop(0, 'transparent');
+            lineGrad.addColorStop(0.2, '#06b6d4');
+            lineGrad.addColorStop(0.8, '#10b981');
+            lineGrad.addColorStop(1, 'transparent');
+            ctx.strokeStyle = lineGrad;
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(W / 2 - nameWidth / 2, 424);
+            ctx.lineTo(W / 2 + nameWidth / 2, 424);
+            ctx.stroke();
+
+            // 8. Опис досягнення
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = '400 21px Inter, sans-serif';
+            ctx.fillText('успішно виконав(ла) усі 5 практичних етапів тренажера з кіберзахисту,', W / 2, 476);
+            ctx.fillText('зібрав(ла) повний комплект технічної броні та опанував(ла) правила', W / 2, 508);
+            ctx.fillText('створення надійних паролів і захисту облікових записів.', W / 2, 540);
+
+            // 9. Картки з результатами (3 блоки)
+            const stats = [
+                { label: 'РІВЕНЬ БРОНІ', value: '100% (5 / 5)', color: '#38bdf8' },
+                { label: 'НАБРАНИЙ ДОСВІД', value: `${gameState.score} XP`, color: '#fbbf24' },
+                { label: 'КВАЛІФІКАЦІЯ', value: 'Майстер Кіберзахисту', color: '#34d399' }
+            ];
+
+            const boxW = 310;
+            const boxH = 92;
+            const gap = 28;
+            const startX = (W - (boxW * 3 + gap * 2)) / 2;
+            const boxY = 582;
+
+            stats.forEach((st, i) => {
+                const bx = startX + i * (boxW + gap);
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+                ctx.lineWidth = 1.5;
+
+                drawRoundedRectPath(ctx, bx, boxY, boxW, boxH, 14);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = 'bold 14px Inter, sans-serif';
+                ctx.fillText(st.label, bx + boxW / 2, boxY + 33);
+
+                ctx.fillStyle = st.color;
+                ctx.font = '800 22px Inter, sans-serif';
+                ctx.fillText(st.value, bx + boxW / 2, boxY + 68);
+            });
+
+            // 10. Нижній колонтитул: Дата видачі та цифрова печатка
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('uk-UA', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '500 17px Inter, sans-serif';
+            ctx.fillText(`Дата видачі: ${dateStr}`, 85, 748);
+            ctx.fillStyle = '#64748b';
+            ctx.font = '400 14px Inter, sans-serif';
+            ctx.fillText('Статус захисту: 2FA + Менеджер паролів активовано', 85, 774);
+
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#34d399';
+            ctx.font = 'bold 17px Inter, sans-serif';
+            ctx.fillText('✔ ПІДТВЕРДЖЕНО СИСТЕМОЮ КІБЕРЗАХИСТУ', W - 85, 748);
+            ctx.fillStyle = '#64748b';
+            ctx.font = '400 14px Inter, sans-serif';
+            ctx.fillText(`ID сертифіката: KB-${now.getFullYear()}-${gameState.score}`, W - 85, 774);
+        }
+
+        function openCertificateModal(fullName) {
+            drawCertificateOnCanvas(fullName);
+            sfx.playVictory();
+            const certModal = document.getElementById('certificateModal');
+            certModal.classList.remove('hidden');
+            certModal.classList.add('flex');
+        }
+
+        function resetGame() {
+            gameState.score = 0;
+            document.getElementById('scoreDisplay').textContent = '0 XP';
+            Object.keys(gameState.equipped).forEach(k => {
+                gameState.equipped[k] = false;
+                const layer = document.getElementById(`armor-${k}`);
+                if (layer) layer.classList.remove('equipped');
+            });
+            for (let i = 1; i <= 5; i++) {
+                const slot = document.getElementById(`slot-${i}`);
+                if (slot) {
+                    slot.className = 'p-2 rounded-xl bg-slate-900/90 border border-slate-700 text-center transition';
+                    slot.querySelector('div:last-child').className = 'text-[10px] font-semibold text-slate-400 leading-tight mt-0.5';
+                }
+            }
+            document.getElementById('armorProgressBar').style.width = '0%';
+            document.getElementById('armorPercentText').textContent = '0% Захисту';
+            const statusCard = document.getElementById('heroStatusCard');
+            if (statusCard) {
+                statusCard.innerHTML = `
+                    <strong class="text-cyan-400 block mb-1">Завдання академії:</strong>
+                    Твій персонаж зараз беззахисний перед кібератаками. Пройди 5 практичних етапів, щоб викувати надійні паролі, зупинити ефект доміно при витоках даних та зібрати повний комплект технічної броні!
+                `;
+            }
+            renderStage(0);
+        }
+
+        /**
+         * ============================================================================
+         * ІНІЦІАЛІЗАЦІЯ ДОДАТКУ
+         * ============================================================================
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Керування модальним вікном "База знань"
+            const codexModal = document.getElementById('codexModal');
+            document.getElementById('openCodexBtn').addEventListener('click', () => {
+                codexModal.classList.remove('hidden');
+                codexModal.classList.add('flex');
+            });
+            const closeCodex = () => {
+                codexModal.classList.add('hidden');
+                codexModal.classList.remove('flex');
+            };
+            document.getElementById('closeCodexBtn').addEventListener('click', closeCodex);
+            document.getElementById('closeCodexBottomBtn').addEventListener('click', closeCodex);
+            codexModal.addEventListener('click', (e) => {
+                if (e.target === codexModal) closeCodex();
+            });
+
+            // Керування модальним вікном Сертифіката
+            const certModal = document.getElementById('certificateModal');
+            const closeCertModal = () => {
+                certModal.classList.add('hidden');
+                certModal.classList.remove('flex');
+            };
+            document.getElementById('closeCertModalBtn').addEventListener('click', closeCertModal);
+            document.getElementById('closeCertBottomBtn').addEventListener('click', closeCertModal);
+            certModal.addEventListener('click', (e) => {
+                if (e.target === certModal) closeCertModal();
+            });
+
+            document.getElementById('downloadCertBtn').addEventListener('click', () => {
+                const canvas = document.getElementById('certificateCanvas');
+                if (!canvas) return;
+                const link = document.createElement('a');
+                const safeName = (gameState.playerName || 'Kiberzakhysnyk').replace(/[^a-zA-Zа-яА-ЯіїєґІЇЄҐ0-9_-]/g, '_');
+                link.download = `Sertyfikat_${safeName}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                sfx.playSuccess();
+                showToast('Завантаження розпочато', 'Ваш іменний сертифікат збережено у форматі PNG.', '🏅');
+            });
+
+            // Перемикач звуку
+            document.getElementById('toggleSoundBtn').addEventListener('click', () => {
+                sfx.enabled = !sfx.enabled;
+                document.getElementById('soundOnIcon').classList.toggle('hidden', !sfx.enabled);
+                document.getElementById('soundOffIcon').classList.toggle('hidden', sfx.enabled);
+                if (sfx.enabled) sfx.playSuccess();
+            });
+
+            // Запуск початкового екрана
+            renderStage(0);
+        });
+    </script>
+</body>
+</html>
